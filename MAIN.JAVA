@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
-// ---------- Abstraction ----------
+
 abstract class FoodItem {
 
-    // ---------- Encapsulation ----------
+
     private String name;
     private double price;
 
@@ -12,7 +12,7 @@ abstract class FoodItem {
         this.price = price;
     }
 
-    // Getter methods (Encapsulation)
+
     public String getName() {
         return name;
     }
@@ -21,12 +21,12 @@ abstract class FoodItem {
         return price;
     }
 
-    // Abstract method
+    
     abstract void showItem();
 }
 
 
-// ---------- Inheritance ----------
+
 class Burger extends FoodItem {
 
     private String size;
@@ -36,7 +36,7 @@ class Burger extends FoodItem {
         this.size = size;
     }
 
-    // ---------- Polymorphism ----------
+    
     void showItem() {
         System.out.println("Burger Name: " + getName());
         System.out.println("Price: " + getPrice());
@@ -46,7 +46,7 @@ class Burger extends FoodItem {
 }
 
 
-// ---------- Inheritance ----------
+
 class Pizza extends FoodItem {
 
     private String topping;
@@ -56,7 +56,7 @@ class Pizza extends FoodItem {
         this.topping = topping;
     }
 
-    // ---------- Polymorphism ----------
+    
     void showItem() {
         System.out.println("Pizza Name: " + getName());
         System.out.println("Price: " + getPrice());
@@ -66,7 +66,7 @@ class Pizza extends FoodItem {
 }
 
 
-// Customer class (Encapsulation)
+
 class Customer {
 
     private String customerName;
@@ -92,7 +92,7 @@ class Customer {
 }
 
 
-// ---------- Main Class ----------
+
 public class FoodOrderingSystem {
 
     public static void main(String[] args) {
@@ -106,14 +106,14 @@ public class FoodOrderingSystem {
         menu.add(b1);
         menu.add(p1);
 
-        // Customer
-        Customer c1 = new Customer("Ashik", "Dhaka");
+        
+        Customer c1 = Customer("Ashik", "Dhaka");
 
         c1.showCustomer();
 
         System.out.println("\nMenu:");
 
-        // ---------- Polymorphism ----------
+    
         for (FoodItem f : menu) {
             f.showItem();
         }

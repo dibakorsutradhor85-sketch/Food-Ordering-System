@@ -99,7 +99,7 @@ public class FoodOrderingSystem {
 
         ArrayList<FoodItem> menu = new ArrayList<>();
 
-        // Creating food items
+        
         Burger b1 = new Burger("Chicken Burger", 5.5, "Large");
         Pizza p1 = new Pizza("Pepperoni Pizza", 8.0, "Extra Cheese");
 

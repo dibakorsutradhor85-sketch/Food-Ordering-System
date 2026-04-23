@@ -1,97 +1,56 @@
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
 abstract class FoodItem {
+    private int id;
     private String name;
     private double price;
 
-    public FoodItem(String name, double price) {
+    public FoodItem(int id, String name, double price) {
+        this.id = id;
         this.name = name;
         this.price = price;
     }
 
-    public String getName() {
-        return name;
-    }
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public double getPrice() { return price; }
 
-    public double getPrice() {
-        return price;
-    }
+    public void setPrice(double price) { this.price = price; }
 
-    public abstract double calculatePrice();
     public abstract void showItem();
 }
 
 class Burger extends FoodItem {
-    private String size;
-
-    public Burger(String name, double price, String size) {
-        super(name, price);
-        this.size = size;
-    }
-
-    @Override
-    public double calculatePrice() {
-        if (size.equalsIgnoreCase("Large")) return getPrice() + 2;
-        if (size.equalsIgnoreCase("Medium")) return getPrice() + 1;
-        return getPrice();
+    public Burger(int id, String name, double price) {
+        super(id, name, price);
     }
 
     @Override
     public void showItem() {
-        System.out.println("Burger: " + getName() + " | Size: " + size + " | Price: " + calculatePrice());
+        System.out.println(getId() + ". Burger: " + getName() + " - $" + getPrice());
     }
 }
 
 class Pizza extends FoodItem {
-    private String topping;
-
-    public Pizza(String name, double price, String topping) {
-        super(name, price);
-        this.topping = topping;
-    }
-
-    @Override
-    public double calculatePrice() {
-        if (topping.equalsIgnoreCase("Extra Cheese")) return getPrice() + 3;
-        return getPrice();
+    public Pizza(int id, String name, double price) {
+        super(id, name, price);
     }
 
     @Override
     public void showItem() {
-        System.out.println("Pizza: " + getName() + " | Topping: " + topping + " | Price: " + calculatePrice());
+        System.out.println(getId() + ". Pizza: " + getName() + " - $" + getPrice());
     }
 }
 
 class Drink extends FoodItem {
-    private boolean isCold;
-
-    public Drink(String name, double price, boolean isCold) {
-        super(name, price);
-        this.isCold = isCold;
-    }
-
-    @Override
-    public double calculatePrice() {
-        return isCold ? getPrice() + 0.5 : getPrice();
+    public Drink(int id, String name, double price) {
+        super(id, name, price);
     }
 
     @Override
     public void showItem() {
-        System.out.println("Drink: " + getName() + " | Cold: " + isCold + " | Price: " + calculatePrice());
-    }
-}
-
-class Customer {
-    private String name;
-
-    public Customer(String name) {
-        this.name = name;
-    }
-
-    public void showCustomer() {
-        System.out.println("Customer: " + name);
+        System.out.println(getId() + ". Drink: " + getName() + " - $" + getPrice());
     }
 }
 
@@ -102,20 +61,14 @@ class Order {
         items.add(item);
     }
 
-    public double getTotal() {
-        double total = 0;
-        for (FoodItem f : items) {
-            total += f.calculatePrice();
-        }
-        return total;
-    }
-
     public void showOrder() {
-        System.out.println("\nOrder Details:");
-        for (FoodItem f : items) {
-            f.showItem();
+        double total = 0;
+        System.out.println("\nYour Order:");
+        for (FoodItem item : items) {
+            item.showItem();
+            total += item.getPrice();
         }
-        System.out.println("Total Bill: " + getTotal());
+        System.out.println("Total Bill: $" + total);
     }
 }
 
@@ -123,25 +76,41 @@ public class FoodOrderingSystem {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        Customer c = new Customer("Ashik");
+        ArrayList<FoodItem> menu = new ArrayList<>();
+        menu.add(new Burger(1, "Chicken Burger", 5.0));
+        menu.add(new Pizza(2, "Cheese Pizza", 8.0));
+        menu.add(new Drink(3, "Coke", 2.0));
+
         Order order = new Order();
 
         while (true) {
-            System.out.println("\n1. Burger\n2. Pizza\n3. Drink\n4. Checkout");
+            System.out.println("\n--- MENU ---");
+            for (FoodItem item : menu) {
+                item.showItem();
+            }
+            System.out.println("0. Exit");
+
+            System.out.print("Select item ID: ");
             int choice = sc.nextInt();
 
-            if (choice == 1) {
-                order.addItem(new Burger("Chicken Burger", 5.0, "Large"));
-            } else if (choice == 2) {
-                order.addItem(new Pizza("Pepperoni", 7.0, "Extra Cheese"));
-            } else if (choice == 3) {
-                order.addItem(new Drink("Coke", 2.0, true));
-            } else {
-                break;
+            if (choice == 0) break;
+
+            boolean found = false;
+            for (FoodItem item : menu) {
+                if (item.getId() == choice) {
+                    order.addItem(item);
+                    System.out.println(item.getName() + " added!");
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Invalid choice!");
             }
         }
 
-        c.showCustomer();
         order.showOrder();
+        sc.close();
     }
 }
